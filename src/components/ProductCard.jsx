@@ -6,26 +6,23 @@ const ProductCard = ({ product, addProduct }) => {
 
   // Helper to show stars from rating.rate (out of 5)
   const renderStars = (rate) => {
-    const fullStars = Math.floor(rate);
-    const halfStar = rate - fullStars >= 0.5;
-    const stars = [];
+  const fullStars = Math.floor(rate);
+  const halfStar = rate - fullStars >= 0.5;
+  const stars = [];
 
-    for (let i = 0; i < fullStars; i++) {
-      stars.push(
-        <i key={`full-${i}`} className="bi bi-star-fill text-warning"></i>
-      );
-    }
-    if (halfStar) {
-      stars.push(<i key="half" className="bi bi-star-half text-warning"></i>);
-    }
-    const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
-    for (let i = 0; i < emptyStars; i++) {
-      stars.push(
-        <i key={`empty-${i}`} className="bi bi-star text-warning"></i>
-      );
-    }
-    return stars;
-  };
+  for (let i = 0; i < fullStars; i++) {
+    stars.push(<i key={`full-${i}`} className="fas fa-star text-warning"></i>);
+  }
+  if (halfStar) {
+    stars.push(<i key="half" className="fas fa-star-half-alt text-warning"></i>);
+  }
+  const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+  for (let i = 0; i < emptyStars; i++) {
+    stars.push(<i key={`empty-${i}`} className="far fa-star text-warning"></i>);
+  }
+  return stars;
+};
+
 
   return (
     <div id={product.id} className="col-md-4 col-sm-6 col-12 mb-4">
