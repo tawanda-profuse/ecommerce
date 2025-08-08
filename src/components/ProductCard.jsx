@@ -4,6 +4,29 @@ import { Link } from "react-router-dom";
 const ProductCard = ({ product, addProduct }) => {
   const isAvailable = product.rating.count > 0;
 
+  // Helper to show stars from rating.rate (out of 5)
+  const renderStars = (rate) => {
+    const fullStars = Math.floor(rate);
+    const halfStar = rate - fullStars >= 0.5;
+    const stars = [];
+
+    for (let i = 0; i < fullStars; i++) {
+      stars.push(
+        <i key={`full-${i}`} className="bi bi-star-fill text-warning"></i>
+      );
+    }
+    if (halfStar) {
+      stars.push(<i key="half" className="bi bi-star-half text-warning"></i>);
+    }
+    const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+    for (let i = 0; i < emptyStars; i++) {
+      stars.push(
+        <i key={`empty-${i}`} className="bi bi-star text-warning"></i>
+      );
+    }
+    return stars;
+  };
+
   return (
     <div id={product.id} className="col-md-4 col-sm-6 col-12 mb-4">
       <div className="card h-100 shadow-sm border-0 rounded-3 text-center">
@@ -25,12 +48,27 @@ const ProductCard = ({ product, addProduct }) => {
               ? product.title.substring(0, 18) + "..."
               : product.title}
           </h5>
-          <p className="card-text text-muted small">
+
+          {/* Category */}
+          <p className="text-muted fst-italic small mb-2 text-capitalize">
+            {product.category}
+          </p>
+
+          {/* Description */}
+          <p className="card-text text-muted small flex-grow-1">
             {product.description.substring(0, 80)}...
           </p>
 
           {/* Price */}
-          <h6 className="fw-bold text-primary mb-3">$ {product.price}</h6>
+          <h6 className="fw-bold text-primary mb-2">$ {product.price}</h6>
+
+          {/* Rating */}
+          <div className="mb-3">
+            <div>{renderStars(product.rating.rate)}</div>
+            <small className="text-muted">
+              {product.rating.rate} / 5 ({product.rating.count} reviews)
+            </small>
+          </div>
 
           {/* Variant Select */}
           <select
@@ -48,7 +86,10 @@ const ProductCard = ({ product, addProduct }) => {
 
           {/* Action Buttons */}
           <div className="mt-auto">
-            <Link to={`/product/${product.id}`} className="btn btn-outline-dark w-100 mb-2">
+            <Link
+              to={`/product/${product.id}`}
+              className="btn btn-outline-dark w-100 mb-2"
+            >
               View Details
             </Link>
 
